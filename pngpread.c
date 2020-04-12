@@ -830,7 +830,7 @@ png_push_process_row(png_structrp png_ptr)
          png_read_filter_row(png_ptr, &row_info, png_ptr->row_buf + 1,
             png_ptr->prev_row + 1, png_ptr->row_buf[0]);
       else
-         png_error(png_ptr, "bad adaptive filter value");
+         png_warning(png_ptr, "pngpread: bad adaptive filter value");
    }
 
    /* libpng 1.5.6: the following line was copying png_ptr->rowbytes before
