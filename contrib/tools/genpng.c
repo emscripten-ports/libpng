@@ -1,7 +1,8 @@
 /*- genpng
  *
  * COPYRIGHT: Written by John Cunningham Bowler, 2015.
- * To the extent possible under law, the author has waived all copyright and
+ * Revised by Glenn Randers-Pehrson, 2017, to add buffer-size check.
+ * To the extent possible under law, the authors have waived all copyright and
  * related or neighboring rights to this work.  This work is published from:
  * United States.
  *
@@ -78,6 +79,8 @@
  * ensure the code picks up the local libpng implementation:
  */
 #include "../../png.h"
+
+#if defined(PNG_SIMPLIFIED_WRITE_SUPPORTED) && defined(PNG_STDIO_SUPPORTED)
 
 static const struct color
 {
@@ -322,7 +325,7 @@ alpha_calc(const struct arg *arg, double x, double y)
                {
                   double wx = bicubic[abs(dx)][0];
 
-                  if (wx != 0 && arg->inside_fn(arg, x+dx/16, y+dy/16)) 
+                  if (wx != 0 && arg->inside_fn(arg, x+dx/16, y+dy/16))
                      alphay += wx;
                }
 
@@ -563,7 +566,7 @@ line_check(double x, double y, double x1, double y1, double x2, double y2,
    /* The dot product is the distance down the line, the cross product is
     * the distance away from the line:
     *
-    *    distance = |cross| / sqrt(len2) 
+    *    distance = |cross| / sqrt(len2)
     */
    cross = x * ly - y * lx;
 
@@ -720,7 +723,7 @@ pixel(png_uint_16p p, struct arg *args, int nargs, double x, double y)
    /* 'a' may be negative or greater than 1; if it is, negative clamp the
     * pixel to 0 if >1 clamp r/g/b:
     */
-   if (a > 0) 
+   if (a > 0)
    {
       if (a > 1)
       {
@@ -780,6 +783,19 @@ main(int argc, const char **argv)
          fprintf(stderr, "genpng: %s: too many arguments\n", argv[3+7*nshapes]);
          return 1;
       }
+
+#if 1
+     /* TO do: determine whether this guard against overflow is necessary.
+      * This comment in png.h indicates that it should be safe: "libpng will
+      * refuse to process an image where such an overflow would occur", but
+      * I don't see where the image gets rejected when the buffer is too
+      * large before the malloc is attempted.
+      */
+      if (image.height > ((size_t)(-1))/(8*image.width)) {
+         fprintf(stderr, "genpng: image buffer would be too big");
+         return 1;
+      }
+#endif
 
       /* Create the buffer: */
       buffer = malloc(PNG_IMAGE_SIZE(image));
@@ -862,3 +878,4 @@ main(int argc, const char **argv)
 
    return 1;
 }
+#endif /* SIMPLIFIED_WRITE && STDIO */

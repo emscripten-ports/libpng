@@ -1,61 +1,47 @@
-Libpng 1.6.18beta04 - May 9, 2015
+libpng 1.6.37 - April 14, 2019
+==============================
 
-This is not intended to be a public release.  It will be replaced
-within a few weeks by a public version or by another test version.
+This is a public release of libpng, intended for use in production code.
 
-Files available for download:
 
-Source files with LF line endings (for Unix/Linux) and with a
-"configure" script
+Files available for download
+----------------------------
 
-   1.6.18beta04.tar.xz (LZMA-compressed, recommended)
-   1.6.18beta04.tar.gz
+Source files with LF line endings (for Unix/Linux):
 
-Source files with CRLF line endings (for Windows), without the
-"configure" script
+ * libpng-1.6.37.tar.xz (LZMA-compressed, recommended)
+ * libpng-1.6.37.tar.gz
 
-   lp1618b04.7z  (LZMA-compressed, recommended)
-   lp1618b04.zip
+Source files with CRLF line endings (for Windows):
+
+ * lp1637.7z (LZMA-compressed, recommended)
+ * lp1637.zip
 
 Other information:
 
-   1.6.18beta04-README.txt
-   1.6.18beta04-LICENSE.txt
-   libpng-1.6.18beta04-*.asc (armored detached GPG signatures)
+ * README.md
+ * LICENSE.md
+ * AUTHORS.md
+ * TRADEMARK.md
 
-Changes since the last public release (1.6.17):
 
-Version 1.6.18beta01 [April 1, 2015]
-  Removed PNG_SET_CHUNK_[CACHE|MALLOC]_LIMIT_SUPPORTED macros.  They
-    have been combined with PNG_SET_USER_LIMITS_SUPPORTED (resolves
-    bug report by Andrew Church).
-  Fixed rgb_to_gray checks and added tRNS checks to pngvalid.c.  This
-    fixes some arithmetic errors that caused some tests to fail on
-    some 32-bit platforms (Bug reports by Peter Breitenlohner [i686]
-    and Petr Gajdos [i586]).
+Changes since the previous public release (version 1.6.36)
+----------------------------------------------------------
 
-Version 1.6.18beta02 [April 26, 2015]
-  Suppressed some warnings from the Borland C++ 5.5.1/5.82 compiler
-    (Bug report by Viktor Szaka'ts).
+ * Fixed a use-after-free vulnerability (CVE-2019-7317) in png_image_free.
+ * Fixed a memory leak in the ARM NEON implementation of png_do_expand_palette.
+ * Fixed a memory leak in pngtest.c.
+ * Fixed two vulnerabilities (CVE-2018-14048, CVE-2018-14550) in
+   contrib/pngminus; refactor.
+ * Changed the license of contrib/pngminus to MIT; refresh makefile and docs.
+   (Contributed by Willem van Schaik)
+ * Fixed a typo in the libpng license v2.
+   (Contributed by Miguel Ojeda)
+ * Added makefiles for AddressSanitizer-enabled builds.
+ * Cleaned up various makefiles.
 
-Version 1.6.18beta03 [May 6, 2015]
-  Replaced "unexpected" with an integer (0xabadca11) in pngset.c
-    where a long was expected, to avoid a compiler warning when PNG_DEBUG > 1.
-  Added contrib/examples/simpleover.c, to demonstrate how to handle
-    alpha compositing of multiple images, using the "simplified API"
-    and an example PNG generation tool, contrib/examples/genpng.c
-    (John Bowler).
 
-Version 1.6.18beta04 [May 9, 2015]
-  PNG_RELEASE_BUILD replaces tests where the code depended on the build base
-    type and can be defined on the command line, allowing testing in beta
-    builds (John Bowler).
-  Avoid Coverity issue 80858 (REVERSE NULL) in pngtest.c
-
-Send comments/corrections/commendations to png-mng-implement at lists.sf.net
-(subscription required; visit
+Send comments/corrections/commendations to png-mng-implement at lists.sf.net.
+Subscription is required; visit
 https://lists.sourceforge.net/lists/listinfo/png-mng-implement
-to subscribe)
-or to glennrp at users.sourceforge.net
-
-Glenn R-P
+to subscribe.
